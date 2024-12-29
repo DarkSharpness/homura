@@ -18,24 +18,32 @@ title: 'Category Index'
     {%- endfor -%}
 {%- endfor -%}
 
-{%- assign build_category_list = '' -%}
-{%- assign build_category_tree = '' -%}
-
-{%- for category in categories_tree -%}
-    {%- assign build_category_list = build_category_list | append: category | append: ',' -%}
-    {%- assign build_category_tree = build_category_tree | append: '<h2 id="' | append: category | append: '" class="linked-section"><i class="fas fa-folder" aria-hidden="true"></i>&nbsp;' | append: category | append: '&nbsp;(' | append: site.categories[category].size | append: ')</h2><div class="post-list">' -%}
-    {%- for post in site.categories[category] -%}
-        {%- assign build_category_tree = build_category_tree | append: '<div class="category-entry"><a href="' | append: post.url | append: '">' | append: post.title | append: '</a><div class="entry-date"><time datetime="' | append: post.date | append: '">' | append: post.date | append: '</time></div></div>' -%}
+{%- capture site_categories -%}
+    {%- for category in categories_tree -%}
+        {{- category -}}{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
-    {%- assign build_category_tree = build_category_tree | append: '</div>' -%}
-{%- endfor -%}
-
-{%- assign categories_list = build_category_list | split: ',' | sort -%}
+{%- endcapture -%}
+{%- assign categories_list = site_categories | split: ',' | sort -%}
 
 {%- for category in categories_list -%}
     <a href="#{{- category -}}" class="btn btn-primary category-btn"><i class="fas fa-folder" aria-hidden="true"></i>&nbsp;{{- category -}}&nbsp;({{site.categories[category].size}})</a>
 {%- endfor -%}
 
 <div id="full-categories-list">
-    {{ build_category_tree }}
+{%- for category in categories_list -%}
+    <h2 id="{{- category -}}" class="linked-section">
+        <i class="fas fa-folder" aria-hidden="true"></i>
+        &nbsp;{{- category -}}&nbsp;({{site.categories[category].size}})
+    </h2>
+    <div class="post-list">
+        {%- for post in site.categories[category] -%}
+            <div class="category-entry">
+                <a href="{{ post.url | relative_url }}">{{- post.title | strip_html -}}</a>
+                <div class="entry-date">
+                    <time datetime="{{- post.date | date_to_xmlschema -}}">{{- post.date | date: date_format -}}</time>
+                </div>
+            </div>
+        {%- endfor -%}
+    </div>
+{%- endfor -%}
 </div>
