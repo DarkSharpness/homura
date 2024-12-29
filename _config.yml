@@ -22,6 +22,7 @@ author: DarkSharpness
 navbar-links:
   Home: "/"
   Tags: "tags"
+  Categories: "categories"
   About: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"
@@ -263,7 +264,7 @@ date_format: "%B %-d, %Y"
 timezone: "+800"
 markdown: kramdown
 highlighter: rouge
-permalink: /:title/
+permalink: /:categories/:title/
 paginate: 5
 
 kramdown:
