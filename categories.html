@@ -21,7 +21,7 @@ title: 'Category Index'
 {%- assign build_category_list = '' -%}
 {%- assign build_category_tree = '' -%}
 
-{%- for category, subcategories in categories_tree -%}
+{%- for category in categories_tree -%}
     {%- assign build_category_list = build_category_list | append: category | append: ',' -%}
     {%- assign build_category_tree = build_category_tree | append: '<h2 id="' | append: category | append: '" class="linked-section"><i class="fas fa-folder" aria-hidden="true"></i>&nbsp;' | append: category | append: '&nbsp;(' | append: site.categories[category].size | append: ')</h2><div class="post-list">' -%}
     {%- for post in site.categories[category] -%}
