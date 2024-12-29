@@ -5,25 +5,12 @@ title: 'Category Index'
 
 {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
 
-{%- assign categories_tree = {} -%}
-{%- for post in site.posts -%}
-    {%- assign post_categories = post.categories | split: ',' -%}
-    {%- assign parent = categories_tree -%}
-    {%- for category in post_categories -%}
-        {%- if parent[category] == nil -%}
-            {%- assign parent = parent | merge: { category => {} } -%}
-        {%- else -%}
-            {%- assign parent = parent[category] -%}
-        {%- endif -%}
-    {%- endfor -%}
-{%- endfor -%}
-
 {%- capture site_categories -%}
-    {%- for category in categories_tree -%}
-        {{- category -}}{%- unless forloop.last -%},{%- endunless -%}
+    {%- for category in site.categories -%}
+        {{- category | first -}}{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
 {%- endcapture -%}
-{%- assign categories_list = site_categories | split: ',' | sort -%}
+{%- assign categories_list = site_categories | split:',' | sort -%}
 
 {%- for category in categories_list -%}
     <a href="#{{- category -}}" class="btn btn-primary category-btn"><i class="fas fa-folder" aria-hidden="true"></i>&nbsp;{{- category -}}&nbsp;({{site.categories[category].size}})</a>
