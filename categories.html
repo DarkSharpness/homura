@@ -5,32 +5,37 @@ title: 'Category Index'
 
 {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
 
-{%- capture site_categories -%}
-    {%- for category in site.categories -%}
-        {{- category | first -}}{%- unless forloop.last -%},{%- endunless -%}
+{%- assign categories_tree = {} -%}
+{%- for post in site.posts -%}
+    {%- assign post_categories = post.categories | split: ',' -%}
+    {%- assign parent = categories_tree -%}
+    {%- for category in post_categories -%}
+        {%- if parent[category] == nil -%}
+            {%- assign parent = parent | merge: { category => {} } -%}
+        {%- else -%}
+            {%- assign parent = parent[category] -%}
+        {%- endif -%}
     {%- endfor -%}
-{%- endcapture -%}
-{%- assign categories_list = site_categories | split:',' | sort -%}
+{%- endfor -%}
+
+{%- assign build_category_list = '' -%}
+{%- assign build_category_tree = '' -%}
+
+{%- for category, subcategories in categories_tree -%}
+    {%- assign build_category_list = build_category_list | append: category | append: ',' -%}
+    {%- assign build_category_tree = build_category_tree | append: '<h2 id="' | append: category | append: '" class="linked-section"><i class="fas fa-folder" aria-hidden="true"></i>&nbsp;' | append: category | append: '&nbsp;(' | append: site.categories[category].size | append: ')</h2><div class="post-list">' -%}
+    {%- for post in site.categories[category] -%}
+        {%- assign build_category_tree = build_category_tree | append: '<div class="category-entry"><a href="' | append: post.url | append: '">' | append: post.title | append: '</a><div class="entry-date"><time datetime="' | append: post.date | append: '">' | append: post.date | append: '</time></div></div>' -%}
+    {%- endfor -%}
+    {%- assign build_category_tree = build_category_tree | append: '</div>' -%}
+{%- endfor -%}
+
+{%- assign categories_list = build_category_list | split: ',' | sort -%}
 
 {%- for category in categories_list -%}
     <a href="#{{- category -}}" class="btn btn-primary category-btn"><i class="fas fa-folder" aria-hidden="true"></i>&nbsp;{{- category -}}&nbsp;({{site.categories[category].size}})</a>
 {%- endfor -%}
 
 <div id="full-categories-list">
-{%- for category in categories_list -%}
-    <h2 id="{{- category -}}" class="linked-section">
-        <i class="fas fa-folder" aria-hidden="true"></i>
-        &nbsp;{{- category -}}&nbsp;({{site.categories[category].size}})
-    </h2>
-    <div class="post-list">
-        {%- for post in site.categories[category] -%}
-            <div class="category-entry">
-                <a href="{{ post.url | relative_url }}">{{- post.title | strip_html -}}</a>
-                <div class="entry-date">
-                    <time datetime="{{- post.date | date_to_xmlschema -}}">{{- post.date | date: date_format -}}</time>
-                </div>
-            </div>
-        {%- endfor -%}
-    </div>
-{%- endfor -%}
+    {{ build_category_tree }}
 </div>
