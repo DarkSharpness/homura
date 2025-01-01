@@ -7,6 +7,7 @@ thumbnail-img: /assets/img/thumb.png
 share-img: /assets/img/path.jpg
 tags: [books, test]
 categories: [bbb]
+conferences: [test]
 author: Sharon Smith and Barry Simpson
 ---
 

@@ -1,0 +1,36 @@
+---
+layout: page
+title: 'Conference Index'
+---
+
+{% assign date_format = site.date_format | default: "%B %-d, %Y" %}
+
+{%- capture site_conferences -%}
+    {%- for conference in site.conferences -%}
+        {{- conference | first -}}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+{%- endcapture -%}
+{%- assign conferences_list = site_conferences | split:',' | sort -%}
+
+{%- for conference in conferences_list -%}
+    <a href="#{{- conference -}}" class="btn btn-primary conference-btn"><i class="fas fa-tag" aria-hidden="true"></i>&nbsp;{{- conference -}}&nbsp;({{site.conferences[conference].size}})</a>
+{%- endfor -%}
+
+<div id="full-conferences-list">
+{%- for conference in conferences_list -%}
+    <h2 id="{{- conference -}}" class="linked-section">
+        <i class="fas fa-tag" aria-hidden="true"></i>
+        &nbsp;{{- conference -}}&nbsp;({{site.conferences[conference].size}})
+    </h2>
+    <div class="post-list">
+        {%- for post in site.conferences[conference] -%}
+            <div class="conference-entry">
+                <a href="{{ post.url | relative_url }}">{{- post.title | strip_html -}}</a>
+                <div class="entry-date">
+                    <time datetime="{{- post.date | date_to_xmlschema -}}">{{- post.date | date: date_format -}}</time>
+                </div>
+            </div>
+        {%- endfor -%}
+    </div>
+{%- endfor -%}
+</div>

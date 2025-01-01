@@ -23,6 +23,7 @@ navbar-links:
   Home: "/"
   Tags: "tags"
   Categories: "categories"
+  Conference: "conference"
   About: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"

@@ -7,6 +7,7 @@ gh-badge: [star, fork, follow]
 tags: [test]
 categories: [aaa, bbb]
 comments: true
+conferences: [test]
 mathjax: true
 author: Bill Smith
 ---
