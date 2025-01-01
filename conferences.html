@@ -13,13 +13,13 @@ title: 'Conference Index'
 {%- assign conferences_list = site_conferences | split:',' | sort -%}
 
 {%- for conference in conferences_list -%}
-    <a href="#{{- conference -}}" class="btn btn-primary conference-btn"><i class="fas fa-tag" aria-hidden="true"></i>&nbsp;{{- conference -}}&nbsp;({{site.conferences[conference].size}})</a>
+    <a href="#{{- conference -}}" class="btn btn-primary conference-btn"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp;{{- conference -}}&nbsp;({{site.conferences[conference].size}})</a>
 {%- endfor -%}
 
 <div id="full-conferences-list">
 {%- for conference in conferences_list -%}
     <h2 id="{{- conference -}}" class="linked-section">
-        <i class="fas fa-tag" aria-hidden="true"></i>
+        <i class="fas fa-calendar" aria-hidden="true"></i>
         &nbsp;{{- conference -}}&nbsp;({{site.conferences[conference].size}})
     </h2>
     <div class="post-list">
